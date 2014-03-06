@@ -17,21 +17,53 @@ use yii\helpers\Json;
  * @since 1.0
  * @see https://github.com/goodybag/bootstrap-notify
  */
-class Notify extends \yii\widgets\InputWidget
+class Notify extends \yii\bootstrap\Widget
 {
+	/**
+	 * @var string Alert style, omit alert- from style name.
+	 */
+	public $type = 'success';
+
+	/**
+	 * @var boolean Allow alert to be closable through a close icon.
+	 */
+	public $closable = true;
+
+	/**
+	 * @var array Alert transition, pretty sure only fade is supported, you can try others if you wish.
+	 */
+	public $transition = 'fade';
+
+	/**
+	 * @var array Fade alert out after a certain delay (in ms)
+	 */
+	public $fadeOut = [
+		'enabled' => true,
+		'delay' => 3000
+	];
+
+	/**
+	 * @var array Text to show on alert, you can use either html or text. HTML will override text.
+	 */
+	public $message = null;
+
+	/**
+	 * @var string Text to show on alert, you can use either html or text. HTML will override text.
+	 */
+    public $onClose = 'function () {}';
+
+	/**
+	 * @var string Called before alert closes.
+	 */
+    public $onClosed = 'function () {}';
+
 	/**
 	 * @inheritdoc
 	 */
 	public function init()
 	{
 		parent::init();
-		$this->registerAssets();
 
-		echo Html::activeTextInput($this->model, $this->attribute, ['class' => 'hidden', 'value' => $this->value]);
-
-		$this->options['id'] = 'notify_' . $this->options['id'];
-		Html::addCssClass($this->options, "notify_{$this->attribute}");
-		echo Html::tag('div', '', $this->options);
 	}
 
 	/**
@@ -43,15 +75,13 @@ class Notify extends \yii\widgets\InputWidget
 		NotifyAsset::register($view);
 
 		$config = [
-			'core' => array_merge(['data' => $this->data], $this->core),
-			'checkbox' => $this->checkbox,
-			'contextmenu' => $this->contextmenu,
-			'dnd' => $this->dnd,
-			'search' => $this->search,
-			'sort' => $this->sort,
-			'state' => $this->state,
-			'plugins' => $this->plugins,
-			'types' => $this->types
+			'type' => $this->type,
+			'closable' => $this->closable,
+			'transition' => $this->transition,
+			'fadeOut' => $this->fadeOut,
+			'message' => $this->message,
+			'onClose' => $this->onClose,
+			'onClosed' => $this->onClosed
 		];
 		$defaults = Json::encode($config);
 
@@ -59,8 +89,7 @@ class Notify extends \yii\widgets\InputWidget
 
 		$js = <<<SCRIPT
 ;(function($, window, document, undefined) {
-	$('#notify_{$this->options['id']}')
-		.notify({$defaults});
+	$('.alert').notify({$defaults}).show();
 })(window.jQuery, window, document);
 SCRIPT;
 		$view->registerJs($js);
