@@ -47,8 +47,8 @@ class NotifyAsset extends AssetBundle
 	public function init()
 	{
 		$this->setSourcePath(__DIR__ . '/../assets');
-		$this->setupAssets('css', ['bootstrap-notify']);
-		$this->setupAssets('js', ['bootstrap-notify']);
+		$this->setupAssets('css', ['css/bootstrap-notify']);
+		$this->setupAssets('js', ['js/bootstrap-notify']);
 		parent::init();
 	}
 

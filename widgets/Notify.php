@@ -9,6 +9,7 @@
 namespace talma\widgets;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\web\JsExpression;
 
 /**
  * Talma Notify widget is a Yii2 wrapper for the Bootstrap Notify.
@@ -19,6 +20,11 @@ use yii\helpers\Json;
  */
 class Notify extends \yii\bootstrap\Widget
 {
+	/**
+	 * @var string Position of the notify bubble
+	 */
+	public $position = 'top-right';
+
 	/**
 	 * @var string Alert style, omit alert- from style name.
 	 */
@@ -63,7 +69,8 @@ class Notify extends \yii\bootstrap\Widget
 	public function init()
 	{
 		parent::init();
-
+		$this->registerAssets();
+		echo Html::tag('div', '', ['id' => 'talmaNotify', 'class' => "notifications {$this->position}"]);
 	}
 
 	/**
@@ -80,16 +87,14 @@ class Notify extends \yii\bootstrap\Widget
 			'transition' => $this->transition,
 			'fadeOut' => $this->fadeOut,
 			'message' => $this->message,
-			'onClose' => $this->onClose,
-			'onClosed' => $this->onClosed
+			'onClose' => new JsExpression($this->onClose),
+			'onClosed' => new JsExpression($this->onClosed)
 		];
 		$defaults = Json::encode($config);
 
-		$inputId = Html::getInputId($this->model, $this->attribute);
-
 		$js = <<<SCRIPT
 ;(function($, window, document, undefined) {
-	$('.alert').notify({$defaults}).show();
+	$('.alert').toNotify({$defaults}, $('#talmaNotify')).show();
 })(window.jQuery, window, document);
 SCRIPT;
 		$view->registerJs($js);
