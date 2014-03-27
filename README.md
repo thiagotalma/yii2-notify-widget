@@ -28,5 +28,5 @@ Usage
 Once the extension is installed, simply use it in your code by :
 
 ```php
-<?= \talma\widget\Notify::wiget(); ?>;
+<?= \talma\widget\Notify::widget(); ?>;
 ```
