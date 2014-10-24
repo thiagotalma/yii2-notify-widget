@@ -16,7 +16,7 @@ php composer.phar require --prefer-dist thiagotalma/yii2-notify "*"
 or add
 
 ```
-"thiagotalma/yii2-notify": "*"
+"thiagotalma/yii2-notify": "dev-master"
 ```
 
 to the require section of your `composer.json` file.
