@@ -4,7 +4,7 @@
     "keywords": ["yii2", "extension", "widget", "alert", "notify"],
     "homepage": "https://github.com/thiagotalma/yii2-notify-widget",
     "type": "yii2-extension",
-    "license": "BSD 3-Clause",
+    "license": "MIT",
     "authors": [
         {
             "name": "Thiago Talma",
